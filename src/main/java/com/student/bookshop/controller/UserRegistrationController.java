@@ -32,11 +32,6 @@ public class UserRegistrationController {
         return "registr";
     }
 
-    @GetMapping("/")
-    public String home(){
-        return "index";
-    }
-
     @PostMapping("registr")
     public String registerUserAccount(@ModelAttribute("user") User user)  {
         userService.saveUser(user);
