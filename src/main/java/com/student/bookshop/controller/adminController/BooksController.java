@@ -41,6 +41,9 @@ public class BooksController {
     @Autowired
     private BookService bookService;
 
+
+
+
     @GetMapping("/admin/books")
     public String getBooks(Model model){
         model.addAttribute("books",bookService.findAllBooks());
@@ -56,6 +59,7 @@ public class BooksController {
         return "bookAdd";
     }
 
+
     @PostMapping("/admin/books/add")
     public String bookAdd(@ModelAttribute("bookDto") BookDto bookDto,
                           @RequestParam("bookImages") MultipartFile file,
@@ -64,6 +68,8 @@ public class BooksController {
         Book book = new Book();
         book.setId(bookDto.getId());
         book.setTitle(bookDto.getTitle());
+        book.setAuthor(authorsService.findByIdUpdate(bookDto.getAuthorId()).get());
+        book.setCategories(bookCategoryService.findByIdUpdate(bookDto.getCategoryId()).get());
         book.setPublisher(publisherService.findByIdUpdate(bookDto.getPublisherId()).get());
         book.setLanguage(languageService.findByIdUpdateLanguage(bookDto.getLanguageId()).get());
         book.setPrice(bookDto.getPrice());
@@ -81,9 +87,8 @@ public class BooksController {
             imageUUID = imgName;
         }
         book.setImageName(imageUUID);
-        bookService.saveBookAuthors(book);
+        bookService.saveBooks(book);
         return "redirect:/admin/books";
     }
-
 
 }

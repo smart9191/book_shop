@@ -31,23 +31,14 @@ public class Book implements Serializable {
     private Double price;
     private String imageName;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_author",
-            joinColumns = {@JoinColumn(name = "book_id",referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "author_id",referencedColumnName = "id")}
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private Author author;
 
-    private Set<Author> authorSet;
 
-    @ManyToMany
-    @JoinTable(
-            name = "book_category",
-            joinColumns = {@JoinColumn(name = "book_id",referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "category_id",referencedColumnName = "id")}
-    )
-
-    private Set<Category> categories;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private Category categories;
 
 
     @ManyToOne(fetch = FetchType.EAGER)

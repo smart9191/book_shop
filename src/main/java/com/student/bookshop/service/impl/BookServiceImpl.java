@@ -17,7 +17,7 @@ public class BookServiceImpl implements BookService {
 
 
     @Override
-    public void saveBookAuthors(Book book) {
+    public void saveBooks(Book book) {
         bookRepo.save(book);
     }
 
@@ -50,6 +50,5 @@ public class BookServiceImpl implements BookService {
     public List<Book> findAllBookByLanguageId(Long id) {
         return bookRepo.findAllByLanguage_Id(id);
     }
-
 
 }

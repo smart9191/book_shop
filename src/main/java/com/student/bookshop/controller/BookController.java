@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api")
 public class BookController {
 
-
     @GetMapping("/home")
     public String home(){
         return "index";

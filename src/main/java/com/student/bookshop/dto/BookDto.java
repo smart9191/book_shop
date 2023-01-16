@@ -18,8 +18,11 @@ public class BookDto implements Serializable {
     private String paperFormat;
     private Long availableQuantity;
     private Double price;
+    private Long authorId;
+    private Long categoryId;
     private Long publisherId;
     private Long languageId;
     private String imageName;
+
 }
 

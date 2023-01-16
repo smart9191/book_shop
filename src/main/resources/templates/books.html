@@ -44,34 +44,38 @@
     <tr>
       <th scope="col">SN</th>
       <th scope="col">Title Name</th>
-      <th scope="col">Publication Year</th>
       <th scope="col">Available Quantity</th>
-      <th scope="col">Number of pages</th>
-      <th scope="col">Paper format</th>
+<!--      <th scope="col">Publication Year</th>-->
+<!--      <th scope="col">Number of pages</th>-->
+<!--      <th scope="col">Paper format</th>-->
       <th scope="col">Price</th>
+      <th scope="col">Preview</th>
+      <th scope="col">Author</th>
       <th scope="col">Category</th>
       <th scope="col">Publisher</th>
       <th scope="col">Language</th>
-      <th scope="col">Preview</th>
+      <th scope="col">Delete</th>
+      <th scope="col">Update</th>
     </tr>
     </thead>
     <tbody>
 
-    <tr th:each="book, iStat : ${book}">
+    <tr th:each="book, iStat : ${books}">
       <th scope="row" th:text="${iStat.index + 1}">1</th>
       <td th:text="${book.title}">Larry</td>
-      <td th:text="${book.publicationDate}">Larry</td>
       <td th:text="${book.availableQuantity}">Larry</td>
+<!--      <td th:text="${book.publicationYear}">Larry</td>-->
+      <!--      <td th:text="${book.numberOfPage}">Larry</td>-->
+<!--      <td th:text="${book.paperFormat}">Larry</td>-->
       <td th:text="${book.price}">Larry</td>
-      <td th:text="${book.numberOfPage}">Larry</td>
-      <td th:text="${book.paperFormat}">Larry</td>
-      <td th:text="${book.category.name}">Larry</td>
+      <td><img src="" height="100px" width="100px"  th:src="@{${'/bootDtoImages/' + book.imageName}}"></td>
+      <td th:text="${book.author.name}">Larry</td>
+      <td th:text="${book.categories.name}">Larry</td>
       <td th:text="${book.publisher.name}">Larry</td>
       <td th:text="${book.language.name}">Larry</td>
-      <td th:text="${book.preview}">Larry</td>
 
-      <td><a href="" th:href="@{/admin/book/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a></td>
-      <td><a href="" th:href="@{/admin/book/update/{id}(id=${book.id})}" class="btn btn-warning">Update</a></td>
+      <td><a href="" th:href="@{/admin/books/delete/{id}(id=${book.id})}" class="btn btn-danger">Delete</a></td>
+      <td><a href="" th:href="@{/admin/books/update/{id}(id=${book.id})}" class="btn btn-warning">Update</a></td>
 
     </tr>
     </tbody>

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface BookService {
 
-    public void saveBookAuthors(Book book);
+    public void saveBooks(Book book);
 
     List<Book> findAllBooks();
 

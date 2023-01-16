@@ -80,17 +80,17 @@
 
                 <div class="form-group">
                     <label for="category">Select Author</label>
-                    <select class="form-control" id="author" name="author">
-                        <option th:each="author:${author}"
-                                th:value="${author.id}"
-                                th:text="${author.name}"
+                    <select class="form-control" id="author" name="authorId">
+                        <option th:each="authors:${author}"
+                                th:value="${authors.id}"
+                                th:text="${authors.name}"
                         >
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="category">Select Category</label>
-                    <select class="form-control" id="category" name="categories">
+                    <select class="form-control" id="category" name="categoryId">
                         <option th:each="category:${categories}"
                                 th:value="${category.id}"
                                 th:text="${category.name}"
