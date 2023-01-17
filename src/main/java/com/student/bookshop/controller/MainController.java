@@ -50,7 +50,7 @@ public class MainController {
         return "shop";
     }
 
-    @GetMapping("/shop/viewproduct/{id}")
+    @GetMapping("/shop/viewbook/{id}")
     public String viewProduct(@PathVariable Long id,  Model model){
 
         model.addAttribute("books", bookService.findByIdUpdate(id).get());
