@@ -66,7 +66,7 @@
             <div class="card" style="margin-top: 20px" th:each="book : ${books}">
                 <div class="row no-gutters">
                     <div class="col-sm-5 d-flex justify-content-center">
-                        <img class="" height="150px" width="150px" th:src="@{${'/bookDtoImages/' + book.imageName}}">
+                        <img class="" height="150px" width="150px" th:src="@{${'/bookImages/' + book.imageName}}">
                     </div>
                     <div class="col-sm-7 d-flex justify-content-center">
                         <div class="card-body">
