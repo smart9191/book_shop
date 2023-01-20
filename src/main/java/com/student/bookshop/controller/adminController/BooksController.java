@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.Set;
 
@@ -65,7 +66,7 @@ public class BooksController {
 
 
     @PostMapping("/admin/books/add")
-    public String bookAdd(@ModelAttribute("bookDto") BookDto bookDto,
+    public String bookAdd(Principal principal,@ModelAttribute("bookDto") BookDto bookDto,
                           @RequestParam("bookImages") MultipartFile file,
                           @RequestParam("imgName") String imgName) throws IOException {
 

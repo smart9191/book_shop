@@ -17,6 +17,7 @@ public class CartController {
 
     @GetMapping("/addToCart/{id}")
     public String assToCart(@PathVariable Long id){
+
         GlobalData.cart.add(bookService.findByIdUpdate(id).get());
         return "redirect:/shop";
     }

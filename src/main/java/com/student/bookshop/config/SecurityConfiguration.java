@@ -39,7 +39,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return auth;
     }
 
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         super.configure(auth);
