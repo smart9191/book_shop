@@ -1,10 +1,20 @@
 server:
   port: 8085
 spring:
+  h2:
+    console:
+      enabled: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    timeout: 600
   datasource:
     url: jdbc:postgresql://localhost:5432/book
     username: dvs_prog
     password: 123
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     properties:
       hibernate:
