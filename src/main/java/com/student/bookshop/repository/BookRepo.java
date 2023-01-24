@@ -12,4 +12,5 @@ public interface BookRepo extends JpaRepository<Book,Long> {
     List<Book> findAllByCategories_Id(Long id);
     List<Book> findAllByPublisher_Id(Long id);
     List<Book> findAllByLanguage_Id(Long id);
+
 }

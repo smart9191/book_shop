@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -42,8 +44,11 @@ public class MainController {
     }
     @GetMapping("/shop")
     public String shop(Model model, HttpSession session){
-        List<Book> bookList = new ArrayList<>();
-        bookList = (List<Book>) session.getAttribute("NOTES_SESSION");
+        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
+        List<Book> bookList = null;
+        if (cart != null){
+            bookList = bookRepo.findAllById(cart.keySet());
+        }
         model.addAttribute("categories",categoryService.findAllBookCategories());
         model.addAttribute("books",bookService.findAllBooks());
         model.addAttribute("cartCount", bookList == null ? 0 : bookList.size());
@@ -51,8 +56,11 @@ public class MainController {
     }
     @GetMapping("/shop/category/{id}")
     public String shopByCategory(@PathVariable Long id, Model model,HttpSession session){
-        List<Book> bookList = new ArrayList<>();
-        bookList = (List<Book>) session.getAttribute("NOTES_SESSION");
+        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
+        List<Book> bookList = null;
+        if (cart != null){
+            bookList = bookRepo.findAllById(cart.keySet());
+        }
         model.addAttribute("categories",categoryService.findAllBookCategories());
         model.addAttribute("books",bookRepo.findAllByCategories_Id(id));
         model.addAttribute("cartCount", bookList == null ? 0 : bookList.size());
@@ -61,8 +69,11 @@ public class MainController {
 
     @GetMapping("/shop/viewbook/{id}")
     public String viewProduct(@PathVariable Long id,  Model model,HttpSession session){
-        List<Book> bookList = new ArrayList<>();
-        bookList = (List<Book>) session.getAttribute("NOTES_SESSION");
+        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
+        List<Book> bookList = null;
+        if (cart != null){
+            bookList = bookRepo.findAllById(cart.keySet());
+        }
         model.addAttribute("books", bookService.findByIdUpdate(id).get());
         model.addAttribute("cartCount", bookList == null ? 0 : bookList.size());
         return "viewBook";

@@ -68,7 +68,7 @@
 
                             <h5 class="mb-4">Cart (<span th:text="${cartCount}">2</span> items)</h5>
 
-                            <div class="row mb-4" th:each="item, iStat : ${cart}">
+                            <div class="row mb-4" th:each="item, iStat : ${books}">
                                 <div class="col-md-5 col-lg-3 col-xl-3">
                                     <div class="mb-3 mb-md-0">
                                         <img class="img-fluid w-100"
@@ -77,22 +77,22 @@
 
                                     </div>
                                 </div>
-                                <div class="col-md-7 col-lg-9 col-xl-9">
+                                <div class="col-md-7 col-lg-9 col-xl-9" >
                                     <div>
                                         <div class="d-flex justify-content-between">
                                             <div>
                                                 <h5 th:text="${item.author.name}">Blue denim shirt</h5>
                                                 <h5 th:text="${item.title}">Blue denim shirt</h5>
-
                                             </div>
 
                                         </div>
                                         <div class="mt-5 d-flex justify-content-between align-items-center">
                                             <div>
-                                                <a href="#!" th:href="@{/cart/removeItem/{index}(index=${iStat.index})}"  type="button" class="card-link-secondary small text-uppercase mr-3"><i class="fas fa-trash-alt mr-1"></i> Remove item </a>
-
+                                                <a href="#!" th:href="@{/cart/removeItem/{index}(index=${item.id})}"  type="button" class="card-link-secondary small text-uppercase mr-3"><i class="fas fa-trash-alt mr-1"></i> Remove item </a>
                                             </div>
+                                            <span th:text="${carts.get(item.id)}"></span>
                                             <p class="mb-0"><span><strong>₹<span th:text="${item.price}"></span></strong></span></p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -104,9 +104,6 @@
 
                         </div>
                     </div>
-
-
-
 
                 </div>
                 <!--Grid column-->

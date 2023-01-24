@@ -66,7 +66,7 @@ public class BooksController {
 
 
     @PostMapping("/admin/books/add")
-    public String bookAdd(Principal principal,@ModelAttribute("bookDto") BookDto bookDto,
+    public String bookAdd(@ModelAttribute("bookDto") BookDto bookDto,
                           @RequestParam("bookImages") MultipartFile file,
                           @RequestParam("imgName") String imgName) throws IOException {
 
