@@ -1,14 +1,23 @@
 package com.student.bookshop.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-
+@Table(name = "orders")
 public class Orders implements Serializable {
 
     @Id
@@ -17,43 +26,14 @@ public class Orders implements Serializable {
     private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "Asia/Tashkent")
-    private Date date;
+    private LocalDate date;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    private Long userId;
 
-    @ManyToOne
-    private Shipper shipper;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Customer customer;
 
-    public Long getId() {
-        return id;
-    }
+    private Double totalAmount;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Shipper getShipper() {
-        return shipper;
-    }
-
-    public void setShipper(Shipper shipper) {
-        this.shipper = shipper;
-    }
 }

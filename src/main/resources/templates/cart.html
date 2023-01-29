@@ -88,9 +88,16 @@
                                         </div>
                                         <div class="mt-5 d-flex justify-content-between align-items-center">
                                             <div>
-                                                <a href="#!" th:href="@{/cart/removeItem/{index}(index=${item.id})}"  type="button" class="card-link-secondary small text-uppercase mr-3"><i class="fas fa-trash-alt mr-1"></i> Remove item </a>
+                                                <a href="#!" th:href="@{/cart/removeItem/{id}(id=${item.id})}"  type="button" class="card-link-secondary small text-uppercase mr-3"><i class="fas fa-trash-alt mr-1"></i> Remove item </a>
                                             </div>
-                                            <span th:text="${carts.get(item.id)}"></span>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button type="button" class="btn btn-primary">-</button>
+                                                <input  type="text" size="4" th:value="${carts.get(item.id)}">
+<!--                                                <form th:action="@{/add/count/}" method="post" th:object="${add-count}">-->
+<!--                                                    <input type="hidden" name="id"  th:field="*{carts.get(item.id)}">-->
+                                                <button type="button" class="btn btn-primary">+</button>
+                                                </form>
+                                            </div>
                                             <p class="mb-0"><span><strong>₹<span th:text="${item.price}"></span></strong></span></p>
 
                                         </div>

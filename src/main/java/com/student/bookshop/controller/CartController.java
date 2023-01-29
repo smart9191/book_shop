@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,14 +31,25 @@ public class CartController {
     private BookRepo bookRepo;
 
 
+//    @GetMapping("/add/count/")
+//    public String addCount(@ModelAttribute("add-count") Long ids, HttpSession session){
+//        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
+//        if (ids.equals(cart.keySet())) {
+//                cart.put(id, cart.get(id) + 1);
+//            }
+//
+//
+//            return "redirect:/shop";
+//        }
+//
+//    }
+
     @GetMapping("/addToCart/{id}")
     public String assToCart(@PathVariable Long id, HttpServletRequest request){
         //Map<int, int>
         //key - book_id
         //value - count
-
         Map<Long, Integer> cart;
-
         cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
         if (cart == null) {
             cart = new HashMap<>();
@@ -47,29 +60,8 @@ public class CartController {
         } else {
             cart.put(id, 1);
         }
-
         request.getSession().setAttribute("CART", cart);
 
-        /*
-        int count = 1;
-
-        List<Book> bookList = new ArrayList<>();
-        bookList= (List<Book>) request.getSession().getAttribute("BOOK_SESSION");
-        if(bookList == null){
-            bookList = new ArrayList<>();
-            request.getSession().setAttribute("BOOK_SESSION", bookList);
-        }
-
-        for (Book books: bookList) {
-            if (books.getId().equals(id)){
-                count++;
-            }
-        }
-        bookList.add(bookService.findByIdUpdate(id).get());
-        request.getSession().setAttribute("BOOK_SESSION", bookList);
-        request.getSession().setAttribute("count",count);
-
-         */
         return "redirect:/shop";
     }
     @GetMapping("/cart")
@@ -83,7 +75,6 @@ public class CartController {
 
         model.addAttribute("books", bookList);
         model.addAttribute("carts", cart);
-
         model.addAttribute("cartCount",bookList == null ? 0 : bookList.size());
         model.addAttribute("total",bookList == null ? 0 : bookList.stream().mapToDouble(
                 b -> b.getPrice() * cart.get(b.getId())
@@ -92,10 +83,10 @@ public class CartController {
         return "cart";
     }
 
-    @GetMapping("/cart/removeItem/{index}")
-    public String cartItemRemove(@PathVariable Long index,Model model,HttpSession session){
+    @GetMapping("/cart/removeItem/{id}")
+    public String cartItemRemove(@PathVariable Long id,HttpSession session){
         Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
-        cart.remove(index);
+        cart.remove(id);
         session.setAttribute("CART",cart);
         return "redirect:/cart";
     }
@@ -106,6 +97,8 @@ public class CartController {
         model.addAttribute("total",GlobalData.cart.stream().mapToDouble(Book::getPrice).sum());
         return "checkout";
 
+
     }
+    // create order and order details
 
 }
