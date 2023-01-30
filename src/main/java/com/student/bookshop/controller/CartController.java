@@ -49,18 +49,36 @@ public class CartController {
         //Map<int, int>
         //key - book_id
         //value - count
-        Map<Long, Integer> cart;
-        cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
-        if (cart == null) {
-            cart = new HashMap<>();
-        }
+        Book book = bookService.findByIdUpdate(id).get();
+        int count = Math.toIntExact(book.getAvailableQuantity());
+        if(count >= 1){
+            if (count == 1){
+                book.setAvailableQuantity(0L);
+            }else {
+                book.setAvailableQuantity(book.getAvailableQuantity() - 1);
+            }
 
-        if (cart.containsKey(id)) {
-            cart.put(id, cart.get(id) + 1);
-        } else {
-            cart.put(id, 1);
+            Map<Long, Integer> cart;
+            cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
+            if (cart == null) {
+                cart = new HashMap<>();
+            }
+
+            if (cart.containsKey(id)) {
+                if (cart.get(id) < count) {
+                    cart.put(id, cart.get(id) + 1);
+                }else {
+                    return new String("redirect:/shop");
+                }
+            } else {
+                cart.put(id, 1);
+            }
+
+            request.getSession().setAttribute("CART", cart);
+            bookRepo.save(book);
+        }else {
+            return new String("redirect:/shop");
         }
-        request.getSession().setAttribute("CART", cart);
 
         return "redirect:/shop";
     }

@@ -12,29 +12,9 @@
   <title>Document</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light" >
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto"></ul>
-      <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" th:href="@{/admin}" href="#">admin-home</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" th:href="@{/logout}" href="#">logout</a>
-        </li>
+<div th:insert="navbar.html"::navbar></div>
 
-      </ul>
-
-    </div>
-  </div>
-</nav>
 <div class="jumbotron text-center">
   <h1 class="display-4">Welcome back, Admin</h1>
   <p>Easily manage your data from this admin <mark>CMS</mark></p>
@@ -78,18 +58,6 @@
     <div class="col-sm-3 pt-3" >
       <div class="card" style="background-color:white;">
         <div class="card-body">
-          <h4 class="card-title">Shippers</h4>
-          <p class="card-text">Manage all the shippers here.</p>
-          <a href="#" th:href="@{/admin/shipper}" class="card-link btn btn-primary">Manage</a>
-
-        </div>
-      </div>
-    </div>
-
-
-    <div class="col-sm-3 pt-3" >
-      <div class="card" style="background-color:white;">
-        <div class="card-body">
           <h4 class="card-title">Regions</h4>
           <p class="card-text">Manage all the regions here.</p>
           <a href="#" th:href="@{/admin/region}" class="card-link btn btn-primary">Manage</a>
@@ -120,12 +88,8 @@
       </div>
     </div>
 
-
-
-
   </div>
 </div>
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
