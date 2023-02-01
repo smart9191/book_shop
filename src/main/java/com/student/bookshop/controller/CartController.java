@@ -30,33 +30,12 @@ public class CartController {
     @Autowired
     private BookRepo bookRepo;
 
-
-//    @GetMapping("/add/count/")
-//    public String addCount(@ModelAttribute("add-count") Long ids, HttpSession session){
-//        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
-//        if (ids.equals(cart.keySet())) {
-//                cart.put(id, cart.get(id) + 1);
-//            }
-//
-//
-//            return "redirect:/shop";
-//        }
-//
-//    }
-
     @GetMapping("/addToCart/{id}")
     public String assToCart(@PathVariable Long id, HttpServletRequest request){
-        //Map<int, int>
-        //key - book_id
-        //value - count
+
         Book book = bookService.findByIdUpdate(id).get();
         int count = Math.toIntExact(book.getAvailableQuantity());
         if(count >= 1){
-            if (count == 1){
-                book.setAvailableQuantity(0L);
-            }else {
-                book.setAvailableQuantity(book.getAvailableQuantity() - 1);
-            }
 
             Map<Long, Integer> cart;
             cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
@@ -67,6 +46,7 @@ public class CartController {
             if (cart.containsKey(id)) {
                 if (cart.get(id) < count) {
                     cart.put(id, cart.get(id) + 1);
+                    count = count - 1;
                 }else {
                     return new String("redirect:/shop");
                 }
@@ -75,7 +55,7 @@ public class CartController {
             }
 
             request.getSession().setAttribute("CART", cart);
-            bookRepo.save(book);
+
         }else {
             return new String("redirect:/shop");
         }
@@ -111,12 +91,16 @@ public class CartController {
 
 
     @GetMapping("/checkout")
-    public String checkout(Model model) {
-        model.addAttribute("total",GlobalData.cart.stream().mapToDouble(Book::getPrice).sum());
+    public String checkout(Model model, HttpSession session){
+
+        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
+        if (cart == null) {
+            return "redirect:/shop";
+        }
+        List<Book> bookList = bookRepo.findAllById(cart.keySet());
+        model.addAttribute("total",bookList == null ? 0 : bookList.stream().mapToDouble(
+                b -> b.getPrice() * cart.get(b.getId())).sum());
         return "checkout";
-
-
     }
-    // create order and order details
 
 }

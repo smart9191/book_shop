@@ -55,10 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(
-                        "/registration**","/shop/**",
+                        "/registration**","/shop/**","/",
                         "/js/**",
                         "/css/**",
-                        "/img/**").permitAll()
+                        "/img/**","/productimages/**").permitAll()
                 .antMatchers("/registr").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
@@ -79,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/resources/**","/static/**","/images/**","/productimages/**","/css/**","/js/**");
+        web.ignoring().antMatchers("/resources/**","/static/**","/images/**","/bookImages/**","/css/**","/js/**");
 
     }
 
