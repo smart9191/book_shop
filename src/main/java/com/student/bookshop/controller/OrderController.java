@@ -25,56 +25,14 @@ import java.util.Map;
 public class OrderController {
 
     @Autowired
-    private UserService userService;
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private BookRepo bookRepo;
-
-    @Autowired
-    private OrderDetailsService orderDetailsService;
 
     @Transactional
     @PostMapping("/payNow")
     public String addOrder(@ModelAttribute ("order") Customer customer,
                            Principal principal,
                            HttpSession session) {
-        Customer costumers = new Customer();
-        costumers.setFirstName(customer.getFirstName());
-        costumers.setLastName(customer.getLastName());
-        costumers.setAddress(customer.getAddress());
-        costumers.setPhone(customer.getPhone());
-        costumers.setEmail(customer.getEmail());
-        costumers.setCity(customer.getCity());
-        costumers.setCountry(customer.getCountry());
-        costumers.setZipCode(customer.getZipCode());
-        customerService.save(costumers);
-        User user = new User();
-        OrderDetails orderDetails = new OrderDetails();
-        user.setEmail(principal.getName());
-        user.setId(userService.findByEmail(principal.getName()).getId());
-        LocalDateTime dateTime = LocalDateTime.now();
-        Orders orders = new Orders();
-        orders.setCustomer(costumers);
-        orders.setDate(LocalDate.from(dateTime));
-        orders.setUserId(user.getId());
-        Map<Long, Integer> cart = (HashMap<Long, Integer>)session.getAttribute("CART");
-        List<Book> bookList = bookRepo.findAllById(cart.keySet());
-        for (Book book : bookList) {
-            orderDetails.setBook(book);
-            orderDetails.setOrders(orders);
-            orderDetails.setAmount(cart.get(book.getId()));
-            orderDetailsService.save(orderDetails);
-            orderDetails = new OrderDetails();
-        }
-        orders.setTotalAmount(bookList.stream().mapToDouble(
-                b -> b.getPrice() * cart.get(b.getId())).sum());
-        orderService.save(orders);
-        session.removeAttribute("CART");
+        orderService.saveOrder(customer, principal, session);
         return "redirect:/";
     }
-
 }

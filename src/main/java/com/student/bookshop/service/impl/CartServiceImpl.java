@@ -7,9 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -18,8 +17,34 @@ public class CartServiceImpl implements CartService {
     private BookRepo bookRepo;
 
     @Override
-    public List<Book> AddToCart(Long id, HttpServletRequest request) {
+    public void AddToCart(Long id, HttpServletRequest request) {
 
-        return null;
+        Book book = bookRepo.findById(id).get();
+        int count = Math.toIntExact(book.getAvailableQuantity());
+        if(count >= 1){
+
+            Map<Long, Integer> cart;
+            cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
+            if (cart == null) {
+                cart = new HashMap<>();
+            }
+
+            if (cart.containsKey(id)) {
+                if (cart.get(id) < count) {
+                    cart.put(id, cart.get(id) + 1);
+                    count = count - 1;
+                }else {
+                    return;
+                }
+            } else {
+                cart.put(id, 1);
+            }
+
+            request.getSession().setAttribute("CART", cart);
+
+    }else {
+            return;
+        }
     }
+
 }

@@ -26,7 +26,7 @@ public class OrderDetails implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private Orders orders;
+    private Order orders;
 
     private Integer amount;
 

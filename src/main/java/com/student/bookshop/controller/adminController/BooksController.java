@@ -24,30 +24,16 @@ import java.util.Set;
 
 @Controller
 public class BooksController {
-
-    public static String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/bookImages";
-
     @Autowired
     private PublisherService publisherService;
-
     @Autowired
     private BookCategoryService categoryService;
-
     @Autowired
     private LanguageService languageService;
-
     @Autowired
     private AuthorsService authorsService;
-
-    @Autowired
-    private BookCategoryService bookCategoryService;
     @Autowired
     private BookService bookService;
-    @Autowired
-    private BookRepo bookRepo;
-    @Autowired
-    private RegionRepo regionRepo;
-
 
     @GetMapping("/admin/books")
     public String getBooks(Model model){
@@ -64,55 +50,18 @@ public class BooksController {
         return "bookAdd";
     }
 
-
     @PostMapping("/admin/books/add")
     public String bookAdd(@ModelAttribute("bookDto") BookDto bookDto,
                           @RequestParam("bookImages") MultipartFile file,
-                          @RequestParam("imgName") String imgName) throws IOException {
-
-        Book book = new Book();
-        book.setId(bookDto.getId());
-        book.setTitle(bookDto.getTitle());
-        book.setAuthor(authorsService.findByIdUpdate(bookDto.getAuthorId()).get());
-        book.setCategories(bookCategoryService.findByIdUpdate(bookDto.getCategoryId()).get());
-        book.setPublisher(publisherService.findByIdUpdate(bookDto.getPublisherId()).get());
-        book.setLanguage(languageService.findByIdUpdateLanguage(bookDto.getLanguageId()).get());
-        book.setPrice(bookDto.getPrice());
-        book.setPublicationYear(bookDto.getPublicationYear());
-        book.setNumberOfPage(bookDto.getNumberOfPage());
-        book.setPaperFormat(bookDto.getPaperFormat());
-        book.setAvailableQuantity(bookDto.getAvailableQuantity());
-
-        String imageUUID;
-        if (!file.isEmpty()){
-            imageUUID=file.getOriginalFilename();
-            Path fileNameAndPath = Paths.get(uploadDir,imageUUID);
-            Files.write(fileNameAndPath,file.getBytes());
-        }else {
-            imageUUID = imgName;
-        }
-        book.setImageName(imageUUID);
-        bookService.saveBooks(book);
+                          @RequestParam ("imgName") String imgName) throws IOException {
+            bookService.saveBooks(bookDto,file,imgName);
         return "redirect:/admin/books";
     }
 
     @GetMapping("/admin/books/update/{id}")
     public String updateBooksId(@PathVariable Long id, Model model){
 
-        Book book = bookRepo.findById(id).get();
-        BookDto bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setPrice(book.getPrice());
-        bookDto.setAvailableQuantity(book.getAvailableQuantity());
-        bookDto.setPaperFormat(book.getPaperFormat());
-        bookDto.setPublicationYear(book.getPublicationYear());
-        bookDto.setNumberOfPage(book.getNumberOfPage());
-        bookDto.setImageName(book.getImageName());
-        bookDto.setAuthorId(book.getAuthor().getId());
-        bookDto.setCategoryId(book.getCategories().getId());
-        bookDto.setPublisherId(book.getPublisher().getId());
-        bookDto.setLanguageId(book.getLanguage().getId());
+        BookDto bookDto = bookService.updateBooks(id);
 
         model.addAttribute("bookDto",bookDto);
         model.addAttribute("author",authorsService.findAllBookAuthors());

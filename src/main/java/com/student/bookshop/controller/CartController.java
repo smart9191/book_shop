@@ -1,21 +1,18 @@
 package com.student.bookshop.controller;
 
-import com.student.bookshop.global.GlobalData;
 import com.student.bookshop.model.Book;
 import com.student.bookshop.repository.BookRepo;
 import com.student.bookshop.repository.RegionRepo;
 import com.student.bookshop.service.BookService;
+import com.student.bookshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,40 +23,15 @@ public class CartController {
     @Autowired
     private BookService bookService;
     @Autowired
+    private CartService cartService;
+    @Autowired
     private RegionRepo regionRepo;
     @Autowired
     private BookRepo bookRepo;
 
     @GetMapping("/addToCart/{id}")
     public String assToCart(@PathVariable Long id, HttpServletRequest request){
-
-        Book book = bookService.findByIdUpdate(id).get();
-        int count = Math.toIntExact(book.getAvailableQuantity());
-        if(count >= 1){
-
-            Map<Long, Integer> cart;
-            cart = (HashMap<Long, Integer>)request.getSession().getAttribute("CART");
-            if (cart == null) {
-                cart = new HashMap<>();
-            }
-
-            if (cart.containsKey(id)) {
-                if (cart.get(id) < count) {
-                    cart.put(id, cart.get(id) + 1);
-                    count = count - 1;
-                }else {
-                    return new String("redirect:/shop");
-                }
-            } else {
-                cart.put(id, 1);
-            }
-
-            request.getSession().setAttribute("CART", cart);
-
-        }else {
-            return new String("redirect:/shop");
-        }
-
+       cartService.AddToCart(id,request);
         return "redirect:/shop";
     }
     @GetMapping("/cart")
